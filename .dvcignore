@@ -1,0 +1,97 @@
+# Python (код не должен быть в DVC)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Envs
+.env
+.env.local
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter (ноутбуки не должны быть в DVC, они в Git)
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+logs/
+*.log
+
+# IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Airflow (код не должен быть в DVC)
+airflow/
+# Исключение: только если есть данные Airflow для версионирования
+# !airflow/data/
+
+# Services (код не должен быть в DVC)
+services/
+src/
+scripts/
+notebooks/
+configs/
+docs/
+
+# Git файлы
+.git/
+.gitignore
+.gitattributes
+
+# DVC метаданные (не версионируем сами себя)
+.dvc/.gitignore
+.dvc/config.local
+
+# Docker
+docker-compose.yml
+docker-compose.override.yml
+Dockerfile*
+*.dockerignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Documentation (в Git, не в DVC)
+README.md
+*.md
+!data/raw/README.md  # Если есть описание данных
+
+# Requirements (в Git, не в DVC)
+requirements.txt
+setup.py
+pyproject.toml
+Pipfile
+Pipfile.lock
+
+# MLflow (локальные запуски, не версионируем)
+mlruns/
+.mlflow/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Grafana/Prometheus (конфигурация в Git, данные не версионируем)
+grafana_data/
+prometheus_data/
+

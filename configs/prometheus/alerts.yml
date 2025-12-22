@@ -1,0 +1,90 @@
+groups:
+  - name: recommender_api_alerts
+    interval: 30s
+    rules:
+      # Алерт на высокий error rate
+      - alert: HighErrorRate
+        expr: rate(recsys_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Высокий уровень ошибок в Recommender API"
+          description: "Error rate превышает 10% за последние 5 минут"
+
+      # Алерт на высокую latency
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(recsys_request_latency_seconds_bucket[5m])) > 1.0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Высокая latency в Recommender API"
+          description: "95-й перцентиль latency превышает 1 секунду"
+
+      # Алерт на падение CTR более чем на 20%
+      - alert: CTRDrop
+        expr: |
+          (
+            rate(recsys_clicks_total[5m]) / 
+            rate(recsys_requests_total[5m])
+          ) < (
+            rate(recsys_clicks_total[1h] offset 1h) / 
+            rate(recsys_requests_total[1h] offset 1h)
+          ) * 0.8
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Падение CTR в Recommender API"
+          description: "CTR упал более чем на 20% по сравнению с предыдущим часом"
+
+      # Алерт на падение conversion rate более чем на 20%
+      - alert: ConversionRateDrop
+        expr: |
+          (
+            rate(recsys_transactions_total[5m]) / 
+            rate(recsys_requests_total[5m])
+          ) < (
+            rate(recsys_transactions_total[1h] offset 1h) / 
+            rate(recsys_requests_total[1h] offset 1h)
+          ) * 0.8
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Падение Conversion Rate в Recommender API"
+          description: "Conversion rate упал более чем на 20% по сравнению с предыдущим часом"
+
+      # Алерт на падение revenue более чем на 20%
+      - alert: RevenueDrop
+        expr: |
+          rate(recsys_revenue_total[5m]) < 
+          rate(recsys_revenue_total[1h] offset 1h) * 0.8
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Падение Revenue в Recommender API"
+          description: "Revenue упал более чем на 20% по сравнению с предыдущим часом"
+
+      # Алерт на недоступность API
+      - alert: APIUnavailable
+        expr: up{job="recommender-api"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Recommender API недоступен"
+          description: "Recommender API не отвечает более 1 минуты"
+
+      # Алерт на низкий request rate (возможная проблема)
+      - alert: LowRequestRate
+        expr: rate(recsys_requests_total[5m]) < 0.1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Низкий request rate в Recommender API"
+          description: "Request rate менее 0.1 запросов в секунду за последние 10 минут"
+

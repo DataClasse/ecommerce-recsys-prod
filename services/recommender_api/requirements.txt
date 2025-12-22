@@ -1,0 +1,27 @@
+# =============================================================================
+# Recommender API - зависимости (без Airflow)
+# =============================================================================
+
+# Core numeric stack
+numpy<2.0.0,>=1.24.0
+scipy>=1.11.0,<1.13.0
+
+# Fast ETL
+polars>=1.35.0,<2.0.0
+pyarrow>=14.0.0,<16.0.0
+
+# Recommenders (no LightFM)
+implicit==0.7.2
+
+# API
+fastapi>=0.110.0,<1.0.0
+uvicorn[standard]>=0.27.0,<1.0.0
+pydantic>=2.6.0,<3.0.0
+python-dotenv>=1.0.0,<2.0.0
+
+# Monitoring
+prometheus-client>=0.20.0,<1.0.0
+
+# Config
+pyyaml>=6.0.0,<7.0.0
+

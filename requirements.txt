@@ -1,0 +1,38 @@
+# =============================================================================
+# Recommender System (e-commerce)
+# =============================================================================
+
+# Core numeric stack
+numpy<2.0.0,>=1.24.0
+scipy>=1.11.0,<1.13.0
+
+# Fast ETL
+polars>=1.35.0,<2.0.0
+pyarrow>=14.0.0,<16.0.0
+
+# Recommenders (no LightFM)
+implicit==0.7.2
+
+# API
+fastapi>=0.110.0,<1.0.0
+uvicorn[standard]>=0.27.0,<1.0.0
+pydantic>=2.6.0,<3.0.0
+python-dotenv>=1.0.0,<2.0.0
+
+# MLOps
+mlflow==2.19.0
+psycopg2-binary>=2.9.0,<3.0.0
+boto3>=1.28.0,<2.0.0
+dvc[s3]>=3.0.0,<4.0.0  # DVC с поддержкой S3 для версионирования данных и моделей
+
+# Monitoring
+prometheus-client>=0.20.0,<1.0.0
+
+# Orchestration 
+apache-airflow==2.7.3
+flask-session==0.5.0  # Совместимо с Airflow 2.7.3 (0.8.0 не имеет модуля sessions)
+
+# Config
+pyyaml>=6.0.0,<7.0.0
+
+

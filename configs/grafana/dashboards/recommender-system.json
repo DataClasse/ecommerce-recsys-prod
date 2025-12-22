@@ -1,0 +1,214 @@
+{
+  "title": "Recommender System Dashboard",
+  "tags": [
+    "recommender",
+    "ml",
+    "api"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 27,
+  "version": 1,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(recsys_requests_total[5m])",
+          "legendFormat": "{{model_type}} - {{status_code}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 2,
+      "title": "Request Latency (95th percentile)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(recsys_request_latency_seconds_bucket[5m]))",
+          "legendFormat": "95th percentile - {{endpoint}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      }
+    },
+    {
+      "id": 3,
+      "title": "CTR (Click-Through Rate)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum(rate(recsys_clicks_total[5m])) / sum(rate(recsys_requests_total[5m]))",
+          "legendFormat": "CTR",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      }
+    },
+    {
+      "id": 4,
+      "title": "Conversion Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum(rate(recsys_transactions_total[5m])) / sum(rate(recsys_requests_total[5m]))",
+          "legendFormat": "Conversion Rate",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      }
+    },
+    {
+      "id": 5,
+      "title": "Revenue",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(recsys_revenue_total[5m])",
+          "legendFormat": "Revenue per second",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      }
+    },
+    {
+      "id": 6,
+      "title": "Requests by Model Type",
+      "type": "piechart",
+      "targets": [
+        {
+          "expr": "sum by (model_type) (recsys_requests_total)",
+          "legendFormat": "{{model_type}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      }
+    },
+    {
+      "id": 7,
+      "title": "Error Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum(rate(recsys_errors_total[5m])) by (status_code, endpoint) or vector(0)",
+          "legendFormat": "{{status_code}} - {{endpoint}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "options": {
+        "graph": {
+          "showPoints": "never",
+          "fill": 0
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 10,
+          "nullValueMode": "null"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Recommendations Count (Median, P95)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, rate(recsys_recommendations_count_bucket[5m]))",
+          "legendFormat": "Median",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, rate(recsys_recommendations_count_bucket[5m]))",
+          "legendFormat": "95th percentile",
+          "refId": "B"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      }
+    },
+    {
+      "id": 9,
+      "title": "Cold Users Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum by (model_type) (rate(recsys_cold_users_total[15m])) / on() group_left() sum(rate(recsys_requests_total[15m])) * 100",
+          "legendFormat": "{{model_type}}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      }
+    },
+    {
+      "id": 10,
+      "title": "Re-ranking Usage",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(recsys_rerank_usage_total[5m])",
+          "legendFormat": "Re-ranking requests",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      }
+    }
+  ],
+  "uid": "recommender-system",
+  "id": null
+}

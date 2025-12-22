@@ -1,0 +1,58 @@
+# Параметры финальной модели
+
+experiment_name: "WEIGHTS_RERANK_a0.6_b0.4"
+description: "Финальная модель: ALS с оптимизированными весами + Content-Based Re-ranking"
+
+# Параметры обработки данных
+data:
+  split_mode: "user"  # "user" или "global"
+  min_user_interactions: 5
+  min_item_interactions: 5
+  test_size: 0.15
+  description: "Параметры фильтрации и разделения данных"
+
+# Веса событий для построения interactions
+weights:
+  view: 1.0
+  addtocart: 4.0
+  transaction: 8.0
+  description: "Веса событий для построения user-item матрицы"
+
+# Параметры ALS модели
+als:
+  factors: 256
+  iterations: 25
+  regularization: 0.1
+  alpha: 4.0
+  random_state: 42
+  num_threads: 0  # 0 = использовать все доступные потоки
+  description: "Параметры ALS (Alternating Least Squares) модели"
+
+# Параметры Content-Based Re-ranking
+rerank:
+  enabled: true
+  alpha: 0.6  # Вес ALS score (1/rank)
+  beta: 0.4   # Вес category score
+  adaptive: true  # Адаптивное переранжирование в зависимости от размера истории
+  description: "Параметры Content-Based Re-ranking на основе категорий"
+
+# Параметры генерации рекомендаций
+recommendations:
+  min_recommendations: 20  # Минимум рекомендаций для расчета Recall@20
+  eval_k_multiplier: 4  # Множитель для eval_k при генерации (max(min_recommendations, eval_k * multiplier))
+  description: "Параметры генерации рекомендаций"
+
+# Параметры оценки
+evaluation:
+  k: 5  # Основной k для метрик (Precision@k, NDCG@k, Hit Rate@k)
+  recall_k: 20  # k для Recall@k
+  ndcg_k: 10  # k для NDCG@k
+  popular_k: 100  # Количество популярных товаров для fallback
+  description: "Параметры оценки модели"
+
+# Пути к данным и артефактам
+paths:
+  data_dir: "data/raw"
+  artifacts_dir: "artifacts"
+  description: "Пути к директориям с данными и артефактами"
+

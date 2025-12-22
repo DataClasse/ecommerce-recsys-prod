@@ -1,0 +1,68 @@
+# DVC Pipeline для рекомендательной системы
+# Описывает этапы обработки данных, обучения модели и валидации
+# Использует params.yaml для отслеживания параметров
+
+stages:
+  create_artifacts:
+    cmd: python -m src.recsys.scripts.create_artifacts --data-dir data/raw --artifacts-dir artifacts
+    deps:
+      - data/raw/events.csv
+      - data/raw/item_properties_part1.csv
+      - data/raw/item_properties_part2.csv
+      - data/raw/category_tree.csv
+      - params.yaml
+      - configs/config.yaml
+      - src/recsys/scripts/create_artifacts.py
+      - src/recsys/
+    params:
+      - data
+      - weights
+    outs:
+      - artifacts/item_metadata.parquet
+      - artifacts/category_stats.parquet
+      - artifacts/category_tree.parquet
+      - artifacts/item_popularity.parquet
+      - artifacts/item_availability.parquet
+
+  train_production_model:
+    cmd: python -m src.recsys.scripts.train_production_model --config configs/config.yaml --data-dir data/raw --artifacts-dir artifacts
+    deps:
+      - artifacts/item_metadata.parquet
+      - artifacts/category_stats.parquet
+      - artifacts/category_tree.parquet
+      - data/raw/events.csv
+      - params.yaml
+      - configs/config.yaml
+      - src/recsys/scripts/train_production_model.py
+      - src/recsys/
+    params:
+      - als
+      - weights
+      - rerank
+    outs:
+      - artifacts/model/als_model.pkl
+      - artifacts/model/user_item_matrix.npz
+      - artifacts/model/metadata.json
+      - artifacts/model/popular.json
+      - artifacts/model/user_purchases.parquet
+
+  validate_model:
+    cmd: python -m src.recsys.scripts.validate_model --model-path artifacts/model/als_model.pkl --data-dir data/raw --config-path configs/config.yaml --artifacts-dir artifacts
+    deps:
+      - artifacts/model/als_model.pkl
+      - artifacts/model/user_item_matrix.npz
+      - artifacts/model/metadata.json
+      - artifacts/item_metadata.parquet
+      - artifacts/category_stats.parquet
+      - artifacts/category_tree.parquet
+      - data/raw/events.csv
+      - params.yaml
+      - configs/config.yaml
+      - src/recsys/scripts/validate_model.py
+      - src/recsys/
+    params:
+      - evaluation
+      - data
+    outs:
+      - artifacts/model/validation_metrics.json
+
