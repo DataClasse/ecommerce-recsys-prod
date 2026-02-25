@@ -1,5 +1,7 @@
 # E-commerce Recommender System
 
+**Продакшен-готовый e-commerce рекомендательный сервис:** ALS, re-ranking, мониторинг и переобучение по расписанию.
+
 ## Описание проекта
 
 **Цель:** Разработка рекомендательной системы для электронной коммерции.
@@ -13,10 +15,19 @@
 
 ---
 
+## Клонирование репозитория
+
+```bash
+git clone https://github.com/DataClasse/recsys-production.git
+cd recsys-production
+```
+
+---
+
 ## Структура проекта
 
 ```
-recsys-project/
+recsys-production/
 ├── data/raw/              # Исходные данные
 ├── src/recsys/            # Библиотечный код
 ├── services/recommender_api/  # FastAPI сервис
@@ -37,7 +48,7 @@ recsys-project/
 ### 1. Установка зависимостей
 
 ```bash
-cd recsys-project
+cd recsys-production
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
