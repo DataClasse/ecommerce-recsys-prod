@@ -18,8 +18,8 @@
 ## Клонирование репозитория
 
 ```bash
-git clone https://github.com/DataClasse/recsys-production.git
-cd recsys-production
+git clone https://github.com/DataClasse/ecommerce-recsys-prod.git
+cd ecommerce-recsys-prod
 ```
 
 ---
@@ -27,7 +27,7 @@ cd recsys-production
 ## Структура проекта
 
 ```
-recsys-production/
+ecommerce-recsys-prod/
 ├── data/raw/              # Исходные данные
 ├── src/recsys/            # Библиотечный код
 ├── services/recommender_api/  # FastAPI сервис
@@ -48,7 +48,7 @@ recsys-production/
 ### 1. Установка зависимостей
 
 ```bash
-cd recsys-production
+cd ecommerce-recsys-prod
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
